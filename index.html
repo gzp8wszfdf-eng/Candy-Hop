@@ -42,7 +42,7 @@ function lose(){active=false;modal.style.display='grid';document.querySelector('
 function frame(now){if(!active||paused)return;let dt=Math.min((now-last)/1000,.025);last=now;t+=dt;let alive=ropes.filter(r=>r.alive);if(alive.length===1){let r=alive[0];r.omega+=(-9.8/r.len*Math.sin(r.angle))*dt;r.omega*=.998;r.angle+=r.omega*dt;candy.x=r.ax+Math.sin(r.angle)*r.len;candy.y=r.ay+Math.cos(r.angle)*r.len;candy.vx=Math.cos(r.angle)*r.len*r.omega;candy.vy=-Math.sin(r.angle)*r.len*r.omega}else if(alive.length===0){candy.vy+=1050*dt;candy.x+=candy.vx*dt;candy.y+=candy.vy*dt}
 for(const s of stars)if(!s.got&&Math.hypot(candy.x-s.x,candy.y-s.y)<29){s.got=true;score++;document.querySelector('#score').textContent=['★ ☆ ☆','★ ★ ☆','★ ★ ★'][score-1]}
 if(alive.length===0&&candy.y>H*.78&&Math.abs(candy.x-W*.5)<82){draw();setTimeout(win,250);return}if(candy.y>H+40||candy.x<-40||candy.x>W+40){draw();setTimeout(lose,200);return}draw();requestAnimationFrame(frame)}
-function launch(){resize();init();modal.style.display='none';active=true;paused=false;last=performance.now();requestAnimationFrame(frame)}
+function launch(){init();resize();modal.style.display='none';active=true;paused=false;last=performance.now();requestAnimationFrame(frame)}
 start.addEventListener('click',launch);document.querySelector('#restart').addEventListener('click',()=>{if(active)launch();else{init();draw()}});document.querySelector('#pause').addEventListener('click',()=>{if(!active)return;paused=!paused;document.querySelector('#pause').textContent=paused?'▶':'Ⅱ';if(!paused){last=performance.now();requestAnimationFrame(frame)}});window.addEventListener('resize',()=>{resize();if(active){init();draw()}});resize();init();draw();
 })();
 </script></body></html>
